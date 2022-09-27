@@ -4,8 +4,9 @@ set backspace=2
 syntax on
 syntax enable
 colorscheme molokai
-set cindent
+set shiftwidth=4
 set tabstop=4
+set smartindent
 
 inoremap jk <ESC>
 set noswapfile
