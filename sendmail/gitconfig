@@ -1,0 +1,11 @@
+[user]
+	email = hanzj.it@gmail.com
+	name = zhijun.han
+[sendemail]
+	confirm = auto
+	smtpEncryption = tls
+	smtpServer = "/usr/bin/msmtp"
+#	smtpServer = smtp.gmail.com
+	smtpServerPort = 587
+#	smptUser=hanzj.it@gmail.com
+ #   smtpPass=ycknjhiubplaeolh
