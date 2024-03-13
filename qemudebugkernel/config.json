@@ -1,6 +1,6 @@
 {
-	"qemu_dir":"xxx",
-	"kernel_dir":"xxx",
-	"initrddir":"xxx"
+	"qemu_dir":"/usr/bin",
+	"kernel_dir":"/root/work/kernelCode/linux-5.10.201",
+	"initrddir":"/root/work/debug"
 
 }
