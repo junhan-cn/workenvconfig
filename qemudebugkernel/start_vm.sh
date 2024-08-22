@@ -9,11 +9,6 @@ kernelpath=$(jq -r ".kernelpath" < $configuration)
 initrdpath=$(jq -r ".initrdpath" < $configuration)
 qcowpath=$(jq -r ".qcowpath" < $configuration)
 
-
-echo $qemupath
-echo $kernelpath
-echo $initrdpath
-echo $qcowpath
 checkqemu() {
 
 	if [[ ! -f "$qemupath" ]];then
