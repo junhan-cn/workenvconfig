@@ -1,6 +1,6 @@
 {
-	"qemu_dir":"/usr/bin",
-	"kernel_dir":"/root/work/kernelCode/linux-5.10.201",
-	"initrddir":"/root/work/debug"
-
+	"qemupath":"/usr/bin/qemu-system-x86_64",
+	"kernelpath":"/nvme-volume/hanzj/workenvconfig/qemudebugkernel/bzImage",
+	"initrdpath":"/nvme-volume/hanzj/workenvconfig/qemudebugkernel/initrd.img",
+	"qcowpath":"xxx"
 }
