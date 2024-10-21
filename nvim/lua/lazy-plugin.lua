@@ -29,6 +29,18 @@ require("lazy").setup({
 	"neovim/nvim-lspconfig",
 
 	-- which keys
-	"folke/which-key.nvim"
+	"folke/which-key.nvim",
 
+	--sidebar
+	"nvim-tree/nvim-tree.lua",
+	"nvim-tree/nvim-web-devicons",
+
+	"hrsh7th/nvim-cmp",
+	"hrsh7th/cmp-nvim-lsp",
+	"hrsh7th/cmp-nvim-lua",
+	"hrsh7th/cmp-buffer",
+	"hrsh7th/cmp-path",
+	"hrsh7th/cmp-cmdline",
+	"saadparwaiz1/cmp_luasnip",
+	"L3MON4D3/LuaSnip",
 })

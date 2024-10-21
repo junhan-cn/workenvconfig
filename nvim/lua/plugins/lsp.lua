@@ -18,5 +18,8 @@ require("mason-lspconfig").setup({
 local lspconfig = require("lspconfig")
 
 
-lspconfig.clangd.setup({})
+lspconfig.clangd.setup({
+	cmd = {'clangd', '--background-index', '--clang-tidy', '--log=verbose'},
+})
+
 

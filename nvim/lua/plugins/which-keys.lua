@@ -11,5 +11,11 @@ wk.add({
 	{"<leader>f", "<cmd>Telescope find_files<cr>", desc = "search files (include submodules)"},
 	{"<leader>g","<cmd>Telescope live_grep<cr>", desc = "live grep"},
 
+	-- quickfix windows
+	{"gc", "<cmd>cclose<cr>", desc = "close quickfix windows"},
+
+	--sidbar
+	{"<F3>", "<cmd>NvimTreeToggle<cr>", desc = "close sidbar"}
+
 
 })

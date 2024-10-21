@@ -1,5 +1,5 @@
 #!/bin/bash
-yum install -y ripgrep bear tmux clang
+yum install -y ripgrep bear tmux clang git
 
 # build kernel
 yum install -y make gcc flex bison elfutils-devel openssl-devel 
@@ -26,9 +26,13 @@ function install_tmux() {
 	cp -r workenvconfig/tmux-hanzj/tmux.conf  ~/.tmux.conf
 }
 
+function install_git() {
+	cp -r workenvconfig/gitconfig ~/.gitconfig
+}
 
 install_nvim
 install_tmux
+install_git
 
 
 
