@@ -26,7 +26,7 @@ function install_tmux() {
 	cp -r workenvconfig/tmux-hanzj/tmux.conf  ~/.tmux.conf
 	echo "alias tmux='tmux -2'" >> ~/.bashrc  #解决tmux 和 vim 颜色不一致
 	# 登录服务器自动进入tmux
-	echo -e "if [ -z "$TMUX" ]; then\n\ttmux attach-session || tmux new-session -n $HOSTNAME\nfi" >> ~/.bashrc
+	echo -e "if [ -z "\$TMUX" ]; then\n\ttmux attach-session || tmux new-session -n $HOSTNAME\nfi" >> ~/.bashrc
 	source ~/.bashrc
 
 }
