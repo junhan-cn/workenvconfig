@@ -10,7 +10,7 @@ require("mason").setup({
 
 require("mason-lspconfig").setup({
 	-- A list of servers to automatically install if they're not already installed.
-	ensure_installed = {"clangd","rust_analyzer"},
+	ensure_installed = {"clangd","rust_analyzer@@2024-10-14"},
 })
 
 
