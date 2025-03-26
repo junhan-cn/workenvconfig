@@ -28,7 +28,13 @@ buildkernel() {
 
 	if [ ! -d "$KERNEL_FILE" ];then
 		tar -xf linux-${KERNEL_VERSION}.tar.gz
-		cd linux-${KERNEL_VERSION} && make x86_64_defconfig && make -j$(nproc)
+		cd linux-${KERNEL_VERSION} && make defconfig  
+		# 开启 debuginfo 相关选项
+		sed -i 's/# CONFIG_DEBUG_INFO_DWARF4 is not set/CONFIG_DEBUG_INFO_DWARF4=y/' .config
+
+		# 解决依赖关系
+		yes '' | make oldconfig
+		make -j$(nproc)
 		KERNEL_PATH=$(pwd)/arch/x86/boot/bzImage
 		cd $PWD_PATH
 	else
