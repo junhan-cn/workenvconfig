@@ -3,6 +3,7 @@
 PWD_PATH=$(dirname "$(realpath "$0")")
 KERNEL_PATH="NULL"
 QEMU_PATH="NULL"
+INITRAMFS_PATH="${PWD_PATH}/busybox-initramfs/initramfs.cpio.gz"
 JSON_FILE="config.json"
 
 #chose ${KERNEL_VERSION} version
@@ -31,6 +32,7 @@ buildkernel() {
 		cd linux-${KERNEL_VERSION} && make defconfig  
 		# 开启 debuginfo 相关选项
 		sed -i 's/# CONFIG_DEBUG_INFO_DWARF4 is not set/CONFIG_DEBUG_INFO_DWARF4=y/' .config
+		sed -i 's/# CONFIG_XFS_FS is not set/CONFIG_XFS_FS=y/' .config
 
 		# 解决依赖关系
 		yes '' | make oldconfig
@@ -69,12 +71,18 @@ genConfig() {
 	fi
 
 	if [ -f "$JSON_FILE" ]; then
-		jq --arg p1 "$KERNEL_PATH" --arg p2 "$QEMU_PATH" \
-			'. + {kernel_path: $p1, qemu_path: $p2}' "$JSON_FILE" > temp.json
+		jq --arg p1 "$KERNEL_PATH" \
+		   --arg p2 "$QEMU_PATH" \
+		   --arg p3 "$INITRAMFS_PATH" \
+	       '. + {kernel_path: $p1, qemu_path: $p2, initramfs_path: $p3}' \
+		   "$JSON_FILE" > temp.json
 		mv temp.json "$JSON_FILE"
 	else
-		jq -n --arg p1 "$KERNEL_PATH" --arg p2 "$QEMU_PATH" \
-			'{kernel_path: $p1, qemu_path: $p2}' > "$JSON_FILE"
+		jq -n --arg p1 "$KERNEL_PATH" \
+			  --arg p2 "$QEMU_PATH" \
+		      --arg p3 "$INITRAMFS_PATH" \
+			  '{kernel_path: $p1, qemu_path: $p2, initramfs_path: $p3}'\
+		      > "$JSON_FILE"
 	fi
 
 	echo "参数已成功写入 $JSON_FILE"
