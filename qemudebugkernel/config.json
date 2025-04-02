@@ -1,6 +1,0 @@
-{
-	"qemupath":"/usr/bin/qemu-system-x86_64",
-	"kernelpath":"/nvme-volume/hanzj/workenvconfig/qemudebugkernel/bzImage",
-	"initrdpath":"/nvme-volume/hanzj/workenvconfig/qemudebugkernel/initrd.img",
-	"qcowpath":"xxx"
-}

@@ -4,9 +4,9 @@ pwdpath=$(dirname "$(realpath "$0")")
 
 configuration=${pwdpath}/config.json
 
-qemupath=$(jq -r ".qemupath" < $configuration)
-kernelpath=$(jq -r ".kernelpath" < $configuration)
-initrdpath=$(jq -r ".initrdpath" < $configuration)
+qemupath=$(jq -r ".qemu_path" < $configuration)
+kernelpath=$(jq -r ".kernel_path" < $configuration)
+initramfspath=$(jq -r ".initramfs_path" < $configuration)
 qcowpath=$(jq -r ".qcowpath" < $configuration)
 
 checkqemu() {
@@ -39,8 +39,8 @@ debug_kernel() {
 	cmd="$qemupath \
 		-nographic -m 1024M \
 		-kernel $kernelpath \
-		-hda $initrdpath\
-		-append 'noapic root=/dev/sda rw console=ttyS0 earlycon=ttyS0 earlyprint ignore_loglevel' -S -s "
+		-initrd $initramfspath\
+		-append 'nokaslr noapic console=ttyS0 earlycon=ttyS0 earlyprint ignore_loglevel' -S -s"
 
 	eval $cmd
 }
