@@ -4,7 +4,7 @@ yum install -y ripgrep bear tmux clang git
 # build kernel
 yum install -y make gcc flex bison elfutils-devel openssl-devel 
 
-function install_vim() {
+function install_nvim() {
 	wget https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz 
 
 	rm -rf /opt/nvim-linux-*
