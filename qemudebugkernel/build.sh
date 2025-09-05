@@ -3,7 +3,7 @@
 set -e
 
 PWD_PATH=$(dirname "$(realpath "$0")")
-INITRAMFS_PATH="${PWD_PATH}/busybox-initramfs/initramfs.cpio.gz"
+INITRAMFS_PATH="${PWD_PATH}/rootfs.img"
 JSON_FILE="config.json"
 
 # 默认版本（可根据需要修改为最新稳定版）
@@ -40,6 +40,7 @@ KERNEL_FILEGZ="${KERNEL_FILE}.tar.gz"
 QEMU_FILE="qemu-${QEMU_VERSION}"
 QEMU_FILEXZ="${QEMU_FILE}.tar.xz"
 KERNEL_PATH="${PWD_PATH}/${KERNEL_FILE}/arch/x86/boot/bzImage"
+VMLINUX_PATH="${PWD_PATH}/${KERNEL_FILE}/vmlinux"
 QEMU_PATH="${PWD_PATH}/${QEMU_FILE}/build/qemu-system-x86_64"
 
 check_deps() {
@@ -102,8 +103,8 @@ buildqemu() {
 }
 
 genConfig() {
-    jq -n --arg kernel "$KERNEL_PATH" --arg qemu "$QEMU_PATH" --arg initramfs "$INITRAMFS_PATH" \
-        '{kernel_path: $kernel, qemu_path: $qemu, initramfs_path: $initramfs}' > "$JSON_FILE"
+    jq -n --arg kernel "$KERNEL_PATH" --arg qemu "$QEMU_PATH" --arg initramfs "$INITRAMFS_PATH" --arg vmlinux "$VMLINUX_PATH" \
+        '{kernel_path: $kernel, qemu_path: $qemu, initramfs_path: $initramfs,vmlinux_path: $vmlinux}' > "$JSON_FILE"
     echo "参数已写入 $JSON_FILE"
 }
 
