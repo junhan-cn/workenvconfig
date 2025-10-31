@@ -60,17 +60,59 @@ install_build_deps() {
     fi
 }
 
+# 检测CPU类型
+detect_cpu() {
+    if grep -q "GenuineIntel" /proc/cpuinfo; then
+        echo "intel"
+    elif grep -q "AuthenticAMD" /proc/cpuinfo; then
+        echo "amd"
+    else
+        error "无法检测CPU类型"
+    fi
+}
+
 buildkernel() {
+	local cpu_type=$(detect_cpu)
     install_build_deps
     if [ ! -f "$KERNEL_FILEGZ" ]; then
-        wget --user-agent="Mozilla" https://mirrors.tuna.tsinghua.edu.cn/kernel/v6.x/$KERNEL_FILEGZ
+        #wget --user-agent="Mozilla" https://mirrors.tuna.tsinghua.edu.cn/kernel/v6.x/$KERNEL_FILEGZ
+#        wget  https://mirrors.tuna.tsinghua.edu.cn/kernel/v6.x/$KERNEL_FILEGZ
+		curl -L -o $KERNEL_FILEGZ  https://mirrors.tuna.tsinghua.edu.cn/kernel/v6.x/$KERNEL_FILEGZ
     fi
     if [ ! -d "$KERNEL_FILE" ]; then
         tar -xf "$KERNEL_FILEGZ"
         cd "$KERNEL_FILE"
         make defconfig
-        sed -i 's/# CONFIG_DEBUG_INFO_DWARF4 is not set/CONFIG_DEBUG_INFO_DWARF4=y/' .config
-        sed -i 's/# CONFIG_XFS_FS is not set/CONFIG_XFS_FS=y/' .config
+    # 使用 scripts/config 配置内核选项
+        if [ -f scripts/config ]; then
+            ./scripts/config --enable DEBUG_INFO_DWARF4
+            ./scripts/config --enable XFS_FS
+            ./scripts/config --enable VIRTUALIZATION
+            ./scripts/config --module KVM
+			# 根据CPU类型启用对应支持
+			if [[ "$cpu_type" == "intel" ]]; then
+				./scripts/config --module KVM_INTEL
+				./scripts/config --disable KVM_AMD
+			else
+				./scripts/config --module KVM_AMD
+				./scripts/config --disable KVM_INTEL
+			fi
+             # 启用必要的virtio驱动
+			./scripts/config --module VIRTIO
+            ./scripts/config --module VIRTIO_PCI
+            ./scripts/config --module VIRTIO_PCI_LEGACY
+            ./scripts/config --module VIRTIO_NET
+            ./scripts/config --module VIRTIO_BLK
+            ./scripts/config --module VIRTIO_BALLOON
+            ./scripts/config --module VIRTIO_CONSOLE
+            ./scripts/config --module VIRTIO_INPUT
+            ./scripts/config --module VIRTIO_MMIO
+			# 其他有用的虚拟化相关选项
+            ./scripts/config --enable TUN
+            ./scripts/config --enable BRIDGE
+            ./scripts/config --enable VHOST_NET
+            ./scripts/config --module VHOST_VSOCK
+        fi
         yes '' | make oldconfig
         make -j$(nproc)
         cd "$PWD_PATH"
