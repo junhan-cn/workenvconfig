@@ -13,6 +13,14 @@ DEFAULT_QEMU_VERSION="8.2.9"
 KERNEL_VERSION="${KERNEL_VERSION:-$DEFAULT_KERNEL_VERSION}"
 QEMU_VERSION="${QEMU_VERSION:-$DEFAULT_QEMU_VERSION}"
 
+KERNEL_FILE="linux-${KERNEL_VERSION}"
+KERNEL_FILEGZ="${KERNEL_FILE}.tar.gz"
+QEMU_FILE="qemu-${QEMU_VERSION}"
+QEMU_FILEXZ="${QEMU_FILE}.tar.xz"
+KERNEL_PATH="${PWD_PATH}/${KERNEL_FILE}/arch/x86/boot/bzImage"
+VMLINUX_PATH="${PWD_PATH}/${KERNEL_FILE}/vmlinux"
+QEMU_PATH="${PWD_PATH}/${QEMU_FILE}/build/qemu-system-x86_64"
+
 # 支持命令行参数指定版本
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -34,14 +42,6 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
-
-KERNEL_FILE="linux-${KERNEL_VERSION}"
-KERNEL_FILEGZ="${KERNEL_FILE}.tar.gz"
-QEMU_FILE="qemu-${QEMU_VERSION}"
-QEMU_FILEXZ="${QEMU_FILE}.tar.xz"
-KERNEL_PATH="${PWD_PATH}/${KERNEL_FILE}/arch/x86/boot/bzImage"
-VMLINUX_PATH="${PWD_PATH}/${KERNEL_FILE}/vmlinux"
-QEMU_PATH="${PWD_PATH}/${QEMU_FILE}/build/qemu-system-x86_64"
 
 check_deps() {
     for cmd in wget jq; do
@@ -75,8 +75,6 @@ buildkernel() {
 	local cpu_type=$(detect_cpu)
     install_build_deps
     if [ ! -f "$KERNEL_FILEGZ" ]; then
-        #wget --user-agent="Mozilla" https://mirrors.tuna.tsinghua.edu.cn/kernel/v6.x/$KERNEL_FILEGZ
-#        wget  https://mirrors.tuna.tsinghua.edu.cn/kernel/v6.x/$KERNEL_FILEGZ
 		curl -L -o $KERNEL_FILEGZ  https://mirrors.tuna.tsinghua.edu.cn/kernel/v6.x/$KERNEL_FILEGZ
     fi
     if [ ! -d "$KERNEL_FILE" ]; then
